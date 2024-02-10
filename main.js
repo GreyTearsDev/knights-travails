@@ -27,3 +27,25 @@ function getValidMoves(row, col) {
 
   return validMoves;
 }
+
+function bfs(start, target) {
+  const visited = new Set();
+  const queue = [[...start], start];
+
+  while (queue.length > 0) {
+    const [row, col, parent] = queue.shift();
+    if (row == target[0] && col === target[1]) {
+      return parent; // return the target position's parent for backtraking
+    } 
+    visited.add(`${row},${col}`);
+
+    const validMoves = getValidMoves(row, col);
+    for (const [nextRow, nextCol] of validMoves) {
+      const key = `${nextRow},${nextCol}`;
+      if (!visited.has(key)) {
+        queue.push([nextRow, nextCol, [row, col]]);
+      }
+    }
+  }
+  return null; // target position not reachable;
+}

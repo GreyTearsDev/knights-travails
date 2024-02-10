@@ -68,6 +68,7 @@ function knightMoves(start, target) {
     // move to the parent position;
     current = parents[current].join();
   }
+  path.unshift(start);
   return path;
 }
 

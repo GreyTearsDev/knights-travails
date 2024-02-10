@@ -19,12 +19,16 @@ function getValidMoves(row, col) {
     const nextRow = row + deltaRow;
     const nextCol = col + deltaCol;
     
-    if (nextRow >= 0 && nextRow < BOARD_SIZE && nextCol >= 0 && nextCol < BOARD_SIZE) {
+    if (isValidPosition(nextRow, nextCol)) {
       validMoves.push([nextRow, nextCol]);
     }
   }
 
   return validMoves;
+}
+
+function isValidPosition(row, col) {
+  return row >= 0 && row < BOARD_SIZE && col >= 0 && col < BOARD_SIZE;
 }
 
 function bfs(start, target) {

@@ -1,7 +1,7 @@
 'use strict'
 
-const chessboard = Array(8).fill().map(() => Array(8).fill(false));
-const knightMovements = [
+const BOARD_SIZE = 8;
+const KNIGHT_MOVEMENTS = [
   [-2, -1],
   [-2, 1],
   [-1, -2],
@@ -15,12 +15,11 @@ const knightMovements = [
 function getValidMoves(row, col) {
   const validMoves = [];
   
-  /* deltaX represents the change in row and deltaY 
-  represents the change in column*/
-  for (const [deltaX, deltaY] of knightMovements) {
-    const nextRow = row + deltaX;
-    const nextCol = col + deltaY;
-    if (nextRow >= 0 && nextRow < 8 && nextCol >= 0 && nextCol < 8) {
+  for (const [deltaRow, deltaCol] of KNIGHT_MOVEMENTS) {
+    const nextRow = row + deltaRow;
+    const nextCol = col + deltaCol;
+    
+    if (nextRow >= 0 && nextRow < BOARD_SIZE && nextCol >= 0 && nextCol < BOARD_SIZE) {
       validMoves.push([nextRow, nextCol]);
     }
   }
@@ -35,14 +34,17 @@ function bfs(start, target) {
   
   while (queue.length > 0) {
     const [row, col] = queue.shift();
+    
     if (row === target[0] && col === target[1]) {
       return parents; // return the target position's parent for backtraking
     } 
     visited.add(`${row},${col}`);
 
     const validMoves = getValidMoves(row, col);
+    
     for (const [nextRow, nextCol] of validMoves) {
       const key = `${nextRow},${nextCol}`;
+    
       if (!visited.has(key)) {
         queue.push([nextRow, nextCol]);
         parents[`${nextRow},${nextCol}`] = [row, col];
@@ -62,6 +64,7 @@ function knightMoves(start, target) {
 
   // backtracking from target to start to get the path
   let current = target.join();
+  
   while (current in parents) {
     // convert string back to array
     path.unshift(current.split(',').map(Number));
